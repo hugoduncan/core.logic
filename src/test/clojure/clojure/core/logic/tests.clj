@@ -1740,7 +1740,19 @@
   (is (= (run* [x y]
            (featurec x {:foo {:bar y}})
            (== x {:foo {:baz 1}}))
-        '())))
+        '()))
+  (is (= (run* [x y]
+           (featurec x {:foo :clojure.core.logic/not-found})
+           (== x {:foo 1}))
+         '()))
+  (is (= (run* [x y]
+           (featurec x {:foo :clojure.core.logic/not-found})
+           (== x {:bar 1}))
+         '([{:bar 1} _0])))
+  (is (= (run* [x y]
+           (featurec x {:foo :clojure.core.logic/not-found :bar 1})
+           (== x {:bar 2}))
+         '())))
 
 (deftest test-disjoint-logic-124
   (is (false? (fd/-disjoint?

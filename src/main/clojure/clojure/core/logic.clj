@@ -2498,11 +2498,11 @@
   (loop [ks (keys u) s s]
     (if (seq ks)
       (let [kf (first ks)
-            vf (get v kf ::not-found)]
-        (if (= vf ::not-found)
+            vf (get v kf ::not-found)
+            uf (get u kf)]
+        (if (and (= vf ::not-found) (not= vf uf))
           nil
-          (let [uf (get u kf) 
-                vf (walk s vf)]
+          (let [vf (walk s vf)]
             (if (lvar? vf)
               (recur (next ks) ((featurec vf uf) s))
               (if (map? uf)
